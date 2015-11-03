@@ -1,3 +1,0 @@
-_monitor.app:
-    resource: @MonitorBundle/Controller/
-    type:     annotation

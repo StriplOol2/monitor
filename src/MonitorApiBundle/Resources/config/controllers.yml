@@ -1,0 +1,7 @@
+parameters:
+
+services:
+    monitor_api.controller.search:
+        class: MonitorApiBundle\Controller\SearchController
+        calls:
+            - [ setContainer, [ @service_container ] ]
