@@ -1,0 +1,13 @@
+parameters:
+
+services:
+    monitor.memcache:
+        class: Memcache
+        calls:
+            - [ connect, [ %memcache.host%, %memcache.port%] ]
+
+    monitor.cache:
+        class: Doctrine\Common\Cache\MemcacheCache
+        calls:
+            - [ setMemcache, [ @monitor.memcache ] ]
+            - [ setNamespace, [ 'monitor' ] ]

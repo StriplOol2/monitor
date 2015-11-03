@@ -1,0 +1,9 @@
+imports:
+    - { resource: controllers.yml }
+    - { resource: commands.yml }
+    - { resource: repositories.yml }
+    - { resource: cache.yml }
+
+parameters:
+
+services:

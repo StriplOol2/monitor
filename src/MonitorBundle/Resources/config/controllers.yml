@@ -1,0 +1,7 @@
+parameters:
+
+services:
+    monitor.controller.mainpage:
+        class: MonitorBundle\Controller\MainPageController
+        calls:
+            - [ setContainer, [ @service_container ] ]

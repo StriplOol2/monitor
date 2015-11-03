@@ -1,0 +1,7 @@
+monitor:
+    resource: @MonitorBundle/Resources/config/routing.yml
+    prefix:   /
+
+monitor.api:
+    resource: @MonitorApiBundle/Resources/config/routing.yml
+    prefix:   /api/
