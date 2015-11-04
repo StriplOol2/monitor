@@ -2,6 +2,7 @@
 
 namespace MonitorApiBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,5 +21,15 @@ class SearchController extends Controller
     public function indexAction()
     {
         return new JsonResponse(['test']);
+    }
+
+    /**
+     * @Route("/searches", name="monitor_api.search.create")
+     * @Method({"POST"})
+     * @param Request $request
+     */
+    public function createSearch(Request $request)
+    {
+        return
     }
 }

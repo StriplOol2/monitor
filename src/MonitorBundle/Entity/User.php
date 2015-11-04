@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User
 {
+    //@todo сделать безопасную работу с апи, а то любой может обратиться по апи
     /**
      * @var int
      * @ORM\Column(type="integer", options={"unsigned"=true})

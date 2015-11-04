@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new MonitorApiBundle\MonitorApiBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new \VLru\ApiBundle\ApiBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

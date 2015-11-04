@@ -1,0 +1,82 @@
+services:
+    api.loader.routing_loader:
+        class: VLru\ApiBundle\AnnotationLoader\ApiAnnotationLoader
+        public: false
+        arguments:
+            - @annotations.reader
+
+    api.loader.annotations_directory_routing_loader:
+        class: VLru\ApiBundle\AnnotationLoader\ApiAnnotationDirectoryLoader
+        arguments:
+            - @file_locator
+            - @api.loader.routing_loader
+        tags:
+            - { name: routing.loader }
+
+    api.listner.params_validation:
+        class: VLru\ApiBundle\EventListener\ParamsValidationListener
+        arguments:
+            - @api.params.metadata_factory
+            - @api.params.request_parser
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    api.listner.api_exception:
+        class: VLru\ApiBundle\EventListener\ApiExceptionListener
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    api.params.metadata_factory:
+        class: VLru\ApiBundle\Request\Params\Metadata\MetadataFactory
+        public: false
+        arguments:
+            - @annotations.reader
+
+    api.params.request_parser:
+        class: VLru\ApiBundle\Request\Params\RequestParser
+        public: false
+        arguments:
+            - @validator
+            - @api.params.transformer_factory
+            - @api.converter.manager
+
+    api.params.transformer_factory:
+        class: VLru\ApiBundle\Request\Params\ParamTransformerFactory
+        public: false
+        arguments:
+            - @service_container
+
+    api.params.transformer.scalar_array:
+        class: VLru\ApiBundle\Configuration\Params\ScalarArrayTransformer
+        arguments:
+            - @api.params.transformer_factory
+
+    api.converter.manager:
+        class: VLru\ApiBundle\Request\Converter\ConverterManager
+        public: false
+
+    api.expression_function.path_variable:
+        class: VLru\ApiBundle\AnnotationLoader\PathVariableExpressionFunctionProvider
+        arguments:
+            - @logger
+        tags:
+            - { name: routing.expression_language_provider }
+
+    api.serializer.metadata_loader.extended_annotation:
+        class: VLru\ApiBundle\Serialization\ExtendedMetadataAnnotationLoader
+        public: false
+        arguments:
+            - @annotations.reader
+
+    api.serializer.name_converter:
+        class: Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
+        public: false
+
+    api.listner.json_transformer:
+        class: VLru\ApiBundle\EventListener\JsonRequestTransformerListener
+        arguments:
+            - @logger
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 100 }
