@@ -19,4 +19,11 @@ abstract class AbstractSearch
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     protected $url;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="MonitorBundle\Entity\User", inversedBy="dromSearches")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     */
+    protected $user;
 }
