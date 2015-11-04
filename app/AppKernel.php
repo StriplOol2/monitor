@@ -16,11 +16,10 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new MonitorBundle\MonitorBundle(),
-            new MonitorApiBundle\MonitorApiBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new \VLru\ApiBundle\ApiBundle()
+            new MonitorBundle\MonitorBundle(),
+            new VLru\ApiBundle\ApiBundle(),
+            new MonitorApiBundle\MonitorApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

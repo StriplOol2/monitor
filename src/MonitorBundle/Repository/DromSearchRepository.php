@@ -2,7 +2,7 @@
 
 namespace MonitorBundle\Repository;
 
-class DromSearchRepository extends BaseRepository
+class DromSearchRepository extends BaseRepository implements SearchRepositoryInterface
 {
 
 }

@@ -1,4 +1,17 @@
 parameters:
 
 services:
+  monitor.repository.user:
+     class: MonitorBundle\Repository\UserRepository
+     factory_service: doctrine.orm.default_entity_manager
+     factory_method: getRepository
+     arguments:
+         - MonitorBundle\Entity\User
+
+  monitor.repository.drom_search:
+     class: MonitorBundle\Repository\DromSearchRepository
+     factory_service: doctrine.orm.default_entity_manager
+     factory_method: getRepository
+     arguments:
+         - MonitorBundle\Entity\DromSearch
 

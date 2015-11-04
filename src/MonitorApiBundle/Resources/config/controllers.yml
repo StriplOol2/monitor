@@ -3,5 +3,8 @@ parameters:
 services:
     monitor_api.controller.search:
         class: MonitorApiBundle\Controller\SearchController
+        arguments:
+            - @monitor.service.search
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ @service_container ]]
+            - [ setNormalizer, [ @serializer ]]
