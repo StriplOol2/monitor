@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use VLru\ApiBundle\Configuration\Route\Version;
 use VLru\ApiBundle\Controller\BaseApiController;
 use VLru\ApiBundle\Request\Form\FormValidationException;
 use VLru\ApiBundle\Configuration\Params;
@@ -44,8 +45,9 @@ class SearchController extends BaseApiController
     }
 
     /**
-     * @Route("/{user_id}/searches", name="monitor_api.search.create")
+     * @Route("/users/{user_id}/searches", name="monitor_api.search.create")
      * @Method({"POST"})
+     * @Version(from="1.0")
      *
      * @Params\String("userId", mapping={"user_id"}, required=true)
      *
@@ -73,8 +75,9 @@ class SearchController extends BaseApiController
     }
 
     /**
-     * @Route("/{user_id}/searches", name="monitor_api.search.all")
+     * @Route("/users/{user_id}/searches", name="monitor_api.search.all")
      * @Method({"GET"})
+     * @Version(from="1.0")
      *
      * @Params\String("userId", mapping={"user_id"}, required=true)
      *
