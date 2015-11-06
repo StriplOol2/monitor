@@ -5,13 +5,13 @@ namespace MonitorBundle\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class UserNotFoundException extends HttpException
+class SearchNotFoundException extends HttpException
 {
     /**
-     * UserNotFoundException constructor.
+     * InvalidTypeException constructor.
      */
     public function __construct()
     {
-        parent::__construct(Response::HTTP_BAD_REQUEST, 'user_not_found');
+        parent::__construct(Response::HTTP_BAD_REQUEST, 'search_not_found');
     }
 }

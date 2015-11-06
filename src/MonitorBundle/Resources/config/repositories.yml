@@ -8,10 +8,10 @@ services:
      arguments:
          - MonitorBundle\Entity\User
 
-  monitor.repository.drom_search:
-     class: MonitorBundle\Repository\DromSearchRepository
+  monitor.repository.search:
+     class: MonitorBundle\Repository\SearchRepository
      factory_service: doctrine.orm.default_entity_manager
      factory_method: getRepository
      arguments:
-         - MonitorBundle\Entity\DromSearch
+         - MonitorBundle\Entity\Search
 

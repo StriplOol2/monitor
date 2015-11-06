@@ -9,15 +9,5 @@ services:
     monitor.service.search:
         class: MonitorBundle\Service\SearchService
         arguments:
-            - @monitor.strategy.search
+            - @monitor.repository.search
             - @monitor.repository.user
-
-    monitor.strategy.search:
-        class: MonitorBundle\Strategy\SearchStrategy
-        calls:
-            - [ addFactory, [ @monitor.factory.drom_search ] ]
-
-    monitor.factory.drom_search:
-        class: MonitorBundle\Factory\DromSearchFactory
-        arguments:
-            - @monitor.repository.drom_search

@@ -45,17 +45,39 @@ class SearchController extends BaseApiController
     }
 
     /**
-     * @Route("/users/{user_id}/searches", name="monitor_api.search.create")
+     * @Route("/users/{auth_key}/searches/{search_id}", name="monitor_api.search.delete")
+     * @Method({"DELETE"})
+     * @Version(from="1.0")
+     *
+     * @Params\String("authKey", mapping={"auth_key"}, required=true)
+     * @Params\Integer("searchId", mapping={"search_id"}, required=true)
+     *
+     * @param string $authKey
+     * @param int $searchId
+     * @return \VLru\ApiBundle\Response\ApiJsonResponse
+     */
+    public function deleteSearch($authKey, $searchId)
+    {
+        /** @var Search $search */
+        $result = $this->searchService->deleteSearch($authKey, $searchId);
+        return $this->createSuccessApiJsonResponse(
+            $result,
+            ['default']
+        );
+    }
+
+    /**
+     * @Route("/users/{auth_key}/searches", name="monitor_api.search.create")
      * @Method({"POST"})
      * @Version(from="1.0")
      *
-     * @Params\String("userId", mapping={"user_id"}, required=true)
+     * @Params\String("authKey", mapping={"auth_key"}, required=true)
      *
-     * @param int $userId
+     * @param string $authKey
      * @param Request $request
      * @return \VLru\ApiBundle\Response\ApiJsonResponse
      */
-    public function createSearch($userId, Request $request)
+    public function createSearch($authKey, Request $request)
     {
         $form = $this->createForm(new SearchType());
         $form->submit($request->request->all());
@@ -63,8 +85,7 @@ class SearchController extends BaseApiController
         if ($form->isValid()) {
             /** @var Search $search */
             $search = $form->getData();
-            $search->setUserId($userId);
-            $result = $this->searchService->createSearchByType($search->getType(), $search->getUserId());
+            $result = $this->searchService->createSearchByType($search->getType(), $authKey);
             return $this->createSuccessApiJsonResponse(
                 $result,
                 ['default']
@@ -75,19 +96,19 @@ class SearchController extends BaseApiController
     }
 
     /**
-     * @Route("/users/{user_id}/searches", name="monitor_api.search.all")
+     * @Route("/users/{auth_key}/searches", name="monitor_api.search.all")
      * @Method({"GET"})
      * @Version(from="1.0")
      *
-     * @Params\String("userId", mapping={"user_id"}, required=true)
+     * @Params\String("authKey", mapping={"auth_key"}, required=true)
      *
-     * @param int $userId
+     * @param string $authKey
      * @return \VLru\ApiBundle\Response\ApiJsonResponse
      * @throws \MonitorBundle\Exception\UserNotFoundException
      */
-    public function getSearches($userId)
+    public function getSearches($authKey)
     {
-        $searches = $this->searchService->getSearches($userId);
+        $searches = $this->searchService->getSearches($authKey);
         return $this->createSuccessApiJsonResponse($searches, ['default']);
     }
 }

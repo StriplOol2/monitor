@@ -5,29 +5,7 @@ namespace MonitorApiBundle\Entity;
 class Search
 {
     /** @var string */
-    protected $userId;
-
-    /** @var string */
     protected $type;
-
-    /**
-     * @return string
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param string $userId
-     *
-     * @return $this
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-        return $this;
-    }
 
     /**
      * @return string

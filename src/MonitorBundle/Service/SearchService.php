@@ -3,16 +3,19 @@
 namespace MonitorBundle\Service;
 
 use MonitorBundle\Entity\User;
+use MonitorBundle\Exception\InvalidTypeException;
+use MonitorBundle\Exception\SearchNotFoundException;
 use MonitorBundle\Exception\UserNotFoundException;
+use MonitorBundle\Factory\SearchFactory;
+use MonitorBundle\Repository\SearchRepository;
 use MonitorBundle\Repository\UserRepository;
-use MonitorBundle\Strategy\SearchStrategy;
 
 class SearchService
 {
     /**
-     * @var SearchStrategy
+     * @var SearchRepository
      */
-    protected $searchStrategy;
+    protected $searchRepository;
 
     /**
      * @var UserRepository
@@ -20,71 +23,93 @@ class SearchService
     protected $userRepository;
 
     /**
+     * @var SearchFactory
+     */
+    protected $searchFactory;
+
+    /**
      * SearchService constructor.
-     * @param SearchStrategy $searchStrategy
+     * @param SearchRepository $searchRepository
      * @param UserRepository $userRepository
      */
     public function __construct(
-        SearchStrategy $searchStrategy,
+        SearchRepository $searchRepository,
         UserRepository $userRepository
     ) {
-        $this->searchStrategy = $searchStrategy;
+        $this->searchRepository = $searchRepository;
         $this->userRepository = $userRepository;
+        $this->searchFactory = new SearchFactory();
     }
 
     /**
      * @param string $type
-     * @param int $userId
+     * @param string $authKey
      * @return bool
+     * @throws UserNotFoundException
+     * @throws InvalidTypeException
      */
-    public function createSearchByType($type, $userId)
+    public function createSearchByType($type, $authKey)
     {
-        $user = $this->getUser($userId);
+        $user = $this->getUser($authKey);
         if (null === $user) {
-            return false;
+            throw new UserNotFoundException();
         }
 
-        $factory = $this->searchStrategy->getFactory($type);
-        if (null === $factory) {
-            return false;
-        }
-        $searchRepository = $factory->getRepository();
-
-        $search = $factory->createEmpty($user);
-        $searchRepository->persist($search);
-        $searchRepository->flush($search);
+        $search = $this->searchFactory->createEmpty($user, $type);
+        $this->searchRepository->persist($search);
+        $this->searchRepository->flush($search);
 
         return true;
     }
 
     /**
-     * @param int $userId
+     * @param $authKey
+     * @param $searchId
+     * @return bool
+     * @throws InvalidTypeException
+     * @throws UserNotFoundException
+     * @throws SearchNotFoundException
+     */
+    public function deleteSearch($authKey, $searchId)
+    {
+        $user = $this->getUser($authKey);
+        if (null === $user) {
+            throw new UserNotFoundException();
+        }
+
+        $search = $this->searchRepository->find($searchId);
+        if (null === $search) {
+            throw new SearchNotFoundException();
+        }
+
+        $this->searchRepository->remove($search);
+        $this->searchRepository->flush($search);
+
+        return true;
+    }
+
+    /**
+     * @param string $authKey
      * @return array
      * @throws UserNotFoundException
      */
-    public function getSearches($userId)
+    public function getSearches($authKey)
     {
-        $result = [];
-
-        $user = $this->getUser($userId);
+        $user = $this->getUser($authKey);
 
         if (null === $user) {
             throw new UserNotFoundException();
         }
 
-        foreach ($this->searchStrategy->getFactories() as $factory) {
-            $result += $factory->getRepository()->findBy(['user' => $userId]);
-        }
-
-        return $result;
+        return $this->searchRepository->findBy(['user' => $user->getId()]);
     }
 
     /**
-     * @param $userId
-     * @return null|User
+     * @param $authKey
+     * @return User|null
      */
-    protected function getUser($userId)
+    protected function getUser($authKey)
     {
-        return $this->userRepository->find($userId);
+        return $this->userRepository->findOneBy(['authKey' => $authKey]);
     }
 }

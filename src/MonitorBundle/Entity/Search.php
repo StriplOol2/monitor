@@ -5,7 +5,11 @@ namespace MonitorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use VLru\ApiBundle\Configuration\Serialization\Groups;
 
-abstract class AbstractSearch
+/**
+ * @ORM\Entity(repositoryClass="MonitorBundle\Repository\SearchRepository")
+ * @ORM\Table(name="search")
+ */
+class Search
 {
     /**
      * @var int
@@ -27,6 +31,32 @@ abstract class AbstractSearch
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected $user;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=10)
+     */
+    protected $type;
+
+    /**
+     * @Groups({"default"})
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
 
     /**
      * @Groups({"default"})
