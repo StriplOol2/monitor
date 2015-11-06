@@ -39,6 +39,61 @@ class Search
     protected $type;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false, options={"default":0})
+     */
+    protected $activated = false;
+
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(name="activated_at", type="datetime", nullable=true)
+     */
+    protected $activatedAt;
+
+    /**
+     * @Groups({"default"})
+     * @return boolean
+     */
+    public function isActivated()
+    {
+        return $this->activated;
+    }
+
+    /**
+     * @param boolean $activated
+     *
+     * @return $this
+     */
+    public function setActivated($activated)
+    {
+        $this->activated = (bool) $activated;
+        if ($this->activated) {
+            $this->activatedAt = new \DateTime();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getActivatedAt()
+    {
+        return $this->activatedAt;
+    }
+
+    /**
+     * @param \DateTime|null $activatedAt
+     *
+     * @return $this
+     */
+    public function setActivatedAt($activatedAt)
+    {
+        $this->activatedAt = $activatedAt;
+        return $this;
+    }
+
+    /**
      * @Groups({"default"})
      * @return string
      */

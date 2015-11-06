@@ -2,16 +2,23 @@ parameters:
 
 services:
   monitor.repository.user:
-     class: MonitorBundle\Repository\UserRepository
-     factory_service: doctrine.orm.default_entity_manager
-     factory_method: getRepository
-     arguments:
-         - MonitorBundle\Entity\User
+    class: MonitorBundle\Repository\UserRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+       - MonitorBundle\Entity\User
 
   monitor.repository.search:
-     class: MonitorBundle\Repository\SearchRepository
-     factory_service: doctrine.orm.default_entity_manager
-     factory_method: getRepository
-     arguments:
-         - MonitorBundle\Entity\Search
+    class: MonitorBundle\Repository\SearchRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+       - MonitorBundle\Entity\Search
+
+  monitor.repository.advert:
+    class: MonitorBundle\Repository\AdvertRepository
+    factory_service: doctrine.orm.default_entity_manager
+    factory_method: getRepository
+    arguments:
+        - MonitorBundle\Entity\Advert
 

@@ -2,6 +2,7 @@
 
 namespace MonitorBundle\Service;
 
+use MonitorBundle\Entity\Search;
 use MonitorBundle\Entity\User;
 use MonitorBundle\Exception\InvalidTypeException;
 use MonitorBundle\Exception\SearchNotFoundException;
@@ -42,20 +43,20 @@ class SearchService
     }
 
     /**
-     * @param string $type
+     * @param Search $search
      * @param string $authKey
      * @return bool
      * @throws UserNotFoundException
      * @throws InvalidTypeException
      */
-    public function createSearchByType($type, $authKey)
+    public function createSearch(Search $search, $authKey)
     {
         $user = $this->getUser($authKey);
+
         if (null === $user) {
             throw new UserNotFoundException();
         }
-
-        $search = $this->searchFactory->createEmpty($user, $type);
+        $search->setUser($user);
         $this->searchRepository->persist($search);
         $this->searchRepository->flush($search);
 
@@ -111,5 +112,34 @@ class SearchService
     protected function getUser($authKey)
     {
         return $this->userRepository->findOneBy(['authKey' => $authKey]);
+    }
+
+    /**
+     * @param Search $searchUpdated
+     * @param string $authKey
+     * @return bool
+     */
+    public function updateSearch(Search $searchUpdated, $authKey)
+    {
+        $user = $this->getUser($authKey);
+
+        if (null === $user) {
+            throw new UserNotFoundException();
+        }
+
+        $search = $this->searchRepository->find($searchUpdated->getId());
+        if (null === $search) {
+            throw new SearchNotFoundException();
+        }
+        /** @var Search $search */
+        $search
+            ->setType($searchUpdated->getType())
+            ->setUrl($searchUpdated->getUrl())
+            ->setActivated($searchUpdated->isActivated());
+
+        $this->searchRepository->merge($search);
+        $this->searchRepository->flush($search);
+
+        return true;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MonitorApiBundle\Form;
 
-use MonitorApiBundle\Entity\Search;
+use MonitorBundle\Entity\Search;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,6 +13,9 @@ class SearchType extends AbstractType
     {
         $builder
             ->add('type', 'text')
+            ->add('url', 'text')
+            ->add('id', 'integer')
+            ->add('activated', 'integer')
         ;
     }
 
