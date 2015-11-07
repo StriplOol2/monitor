@@ -20,6 +20,13 @@ class Advert
     protected $id;
 
     /**
+     * @var Search
+     * @ORM\ManyToOne(targetEntity="MonitorBundle\Entity\Search", inversedBy="adverts")
+     * @ORM\JoinColumn(name="search_id", referencedColumnName="id", nullable=false)
+     */
+    protected $search;
+
+    /**
      * @var string
      * @ORM\Column(type="string", length=300, nullable=false)
      */
@@ -134,6 +141,33 @@ class Advert
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $maker;
+
+    /**
+     * Advert constructor.
+     */
+    public function __construct()
+    {
+        $this->createAt = new \DateTime();
+    }
+
+    /**
+     * @return Search
+     */
+    public function getSearch()
+    {
+        return $this->search;
+    }
+
+    /**
+     * @param Search $search
+     *
+     * @return $this
+     */
+    public function setSearch(Search $search)
+    {
+        $this->search = $search;
+        return $this;
+    }
 
     /**
      * @Groups({"default"})
@@ -555,7 +589,7 @@ class Advert
     /**
      * @return string
      */
-    public function getHash()
+    public function updateHash()
     {
         return md5(
             $this->url .
@@ -571,7 +605,8 @@ class Advert
             $this->maker .
             $this->power .
             $this->mileage .
-            $this->year
+            $this->year .
+            $this->getSearch()->getId()
         );
     }
 }

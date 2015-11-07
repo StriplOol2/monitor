@@ -1,0 +1,10 @@
+services:
+    monitor.strategy.crawler:
+        class: MonitorBundle\Strategy\CrawlerStrategy
+        calls:
+            - [ add, [@monitor.factory.crawler.drom]]
+
+    monitor.factory.crawler.drom:
+        class: MonitorBundle\Factory\DromCrawlerFactory
+        arguments:
+            - @monitor.client.curl

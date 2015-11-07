@@ -1,8 +1,8 @@
 <?php
 
-namespace MonitorBundle\Entity;
+namespace MonitorBundle\Enum;
 
-class Types
+class TypesEnum
 {
     static public $DROM_TYPE = 'drom';
 }

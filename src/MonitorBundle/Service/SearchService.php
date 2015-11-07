@@ -53,9 +53,6 @@ class SearchService
     {
         $user = $this->getUser($authKey);
 
-        if (null === $user) {
-            throw new UserNotFoundException();
-        }
         $search->setUser($user);
         $this->searchRepository->persist($search);
         $this->searchRepository->flush($search);
@@ -74,15 +71,7 @@ class SearchService
     public function deleteSearch($authKey, $searchId)
     {
         $user = $this->getUser($authKey);
-        if (null === $user) {
-            throw new UserNotFoundException();
-        }
-
-        $search = $this->searchRepository->find($searchId);
-        if (null === $search) {
-            throw new SearchNotFoundException();
-        }
-
+        $search = $this->getSearch($searchId, $user->getId());
         $this->searchRepository->remove($search);
         $this->searchRepository->flush($search);
 
@@ -98,20 +87,7 @@ class SearchService
     {
         $user = $this->getUser($authKey);
 
-        if (null === $user) {
-            throw new UserNotFoundException();
-        }
-
         return $this->searchRepository->findBy(['user' => $user->getId()]);
-    }
-
-    /**
-     * @param $authKey
-     * @return User|null
-     */
-    protected function getUser($authKey)
-    {
-        return $this->userRepository->findOneBy(['authKey' => $authKey]);
     }
 
     /**
@@ -122,16 +98,7 @@ class SearchService
     public function updateSearch(Search $searchUpdated, $authKey)
     {
         $user = $this->getUser($authKey);
-
-        if (null === $user) {
-            throw new UserNotFoundException();
-        }
-
-        $search = $this->searchRepository->find($searchUpdated->getId());
-        if (null === $search) {
-            throw new SearchNotFoundException();
-        }
-        /** @var Search $search */
+        $search = $this->getSearch($searchUpdated->getId(), $user->getId());
         $search
             ->setType($searchUpdated->getType())
             ->setUrl($searchUpdated->getUrl())
@@ -141,5 +108,32 @@ class SearchService
         $this->searchRepository->flush($search);
 
         return true;
+    }
+
+    /**
+     * @param string $authKey
+     * @return User|null
+     */
+    protected function getUser($authKey)
+    {
+        $user = $this->userRepository->findOneBy(['authKey' => $authKey]);
+        if (null === $user) {
+            throw new UserNotFoundException();
+        }
+        return $user;
+    }
+
+    /**
+     * @param int $searchId
+     * @param int $userId
+     * @return Search|null
+     */
+    protected function getSearch($searchId, $userId)
+    {
+        $search = $this->searchRepository->findOneBy(['id' => $searchId, 'user' => $userId]);
+        if (null === $search) {
+            throw new SearchNotFoundException();
+        }
+        return $search;
     }
 }

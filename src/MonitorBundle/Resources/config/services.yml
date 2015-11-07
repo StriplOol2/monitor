@@ -1,9 +1,11 @@
 imports:
+    - { resource: factories.yml }
     - { resource: commands.yml }
     - { resource: repositories.yml }
     - { resource: cache.yml }
 
 parameters:
+    monitor.search.timeout_seconds: 180000
 
 services:
     monitor.service.search:
@@ -11,3 +13,17 @@ services:
         arguments:
             - @monitor.repository.search
             - @monitor.repository.user
+
+    monitor.service.advert:
+        class: MonitorBundle\Service\AdvertService
+        arguments:
+            - @monitor.repository.user
+            - @monitor.repository.advert
+            - @monitor.repository.search
+            - @monitor.strategy.crawler
+            - @logger
+
+    monitor.client.curl:
+        class: MonitorBundle\Client\CurlClient
+        arguments:
+            - @logger

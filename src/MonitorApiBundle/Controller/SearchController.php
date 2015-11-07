@@ -7,7 +7,6 @@ use MonitorBundle\Entity\Search;
 use MonitorBundle\Service\SearchService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use VLru\ApiBundle\Configuration\Route\Version;
 use VLru\ApiBundle\Controller\BaseApiController;
@@ -35,15 +34,6 @@ class SearchController extends BaseApiController
     }
 
     /**
-     * @Route("/", name="monitor_api.page.search")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        return new JsonResponse(['test']);
-    }
-
-    /**
      * @Route("/users/{auth_key}/searches/{search_id}", name="monitor_api.search.delete")
      * @Method({"DELETE"})
      * @Version(from="1.0")
@@ -55,7 +45,7 @@ class SearchController extends BaseApiController
      * @param int $searchId
      * @return \VLru\ApiBundle\Response\ApiJsonResponse
      */
-    public function deleteSearch($authKey, $searchId)
+    public function deleteSearchAction($authKey, $searchId)
     {
         /** @var Search $search */
         $result = $this->searchService->deleteSearch($authKey, $searchId);
@@ -78,7 +68,7 @@ class SearchController extends BaseApiController
      * @param Request $request
      * @return \VLru\ApiBundle\Response\ApiJsonResponse
      */
-    public function updateSearch($authKey, $searchId, Request $request)
+    public function updateSearchAction($authKey, $searchId, Request $request)
     {
         $form = $this->createForm(new SearchType());
         $form->submit($request->query->all());
@@ -108,7 +98,7 @@ class SearchController extends BaseApiController
      * @param Request $request
      * @return \VLru\ApiBundle\Response\ApiJsonResponse
      */
-    public function createSearch($authKey, Request $request)
+    public function createSearchAction($authKey, Request $request)
     {
         $form = $this->createForm(new SearchType());
         $form->submit($request->request->all());
@@ -137,7 +127,7 @@ class SearchController extends BaseApiController
      * @return \VLru\ApiBundle\Response\ApiJsonResponse
      * @throws \MonitorBundle\Exception\UserNotFoundException
      */
-    public function getSearches($authKey)
+    public function getSearchesAction($authKey)
     {
         $searches = $this->searchService->getSearches($authKey);
         return $this->createSuccessApiJsonResponse($searches, ['default']);

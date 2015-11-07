@@ -8,3 +8,11 @@ services:
         calls:
             - [ setContainer, [ @service_container ]]
             - [ setNormalizer, [ @serializer ]]
+
+    monitor_api.controller.advert:
+            class: MonitorApiBundle\Controller\AdvertController
+            arguments:
+                - @monitor.service.advert
+            calls:
+                - [ setContainer, [ @service_container ]]
+                - [ setNormalizer, [ @serializer ]]

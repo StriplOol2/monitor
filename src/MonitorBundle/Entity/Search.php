@@ -2,6 +2,7 @@
 
 namespace MonitorBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use VLru\ApiBundle\Configuration\Serialization\Groups;
 
@@ -27,7 +28,7 @@ class Search
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="MonitorBundle\Entity\User", inversedBy="dromSearches")
+     * @ORM\ManyToOne(targetEntity="MonitorBundle\Entity\User", inversedBy="searches")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected $user;
@@ -49,6 +50,20 @@ class Search
      * @ORM\Column(name="activated_at", type="datetime", nullable=true)
      */
     protected $activatedAt;
+
+    /**
+     * @var Advert[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="MonitorBundle\Entity\Advert", mappedBy="search")
+     */
+    protected $adverts;
+
+    /**
+     * Search constructor.
+     */
+    public function __construct()
+    {
+        $this->adverts = new ArrayCollection();
+    }
 
     /**
      * @Groups({"default"})
@@ -170,5 +185,17 @@ class Search
     {
         $this->user = $user;
         return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function generateUrl()
+    {
+        if ($this->getUrl()) {
+            return $this->getUrl();
+        }
+
+        return $this->getUrl();
     }
 }
