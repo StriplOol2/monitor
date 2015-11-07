@@ -7,7 +7,11 @@ use VLru\ApiBundle\Configuration\Serialization\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="MonitorBundle\Repository\AdvertRepository")
- * @ORM\Table(name="advert")
+ * @ORM\Table(name="advert", indexes={
+ *     @ORM\Index(columns={"search_id"}),
+ *     @ORM\Index(columns={"hash"}),
+ *     @ORM\Index(name="IDX_SEARCH_HASH", columns={"search_id", "hash"})
+ * }))
  */
 class Advert
 {
@@ -143,6 +147,31 @@ class Advert
     protected $maker;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
+    protected $hash;
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string $hash
+     *
+     * @return $this
+     */
+    public function setHash($hash)
+    {
+        $this->hash = (string) $hash;
+        return $this;
+    }
+
+    /**
      * Advert constructor.
      */
     public function __construct()
@@ -206,6 +235,7 @@ class Advert
     public function setUrl($url)
     {
         $this->url = (string) $url;
+        $this->updateHash();
         return $this;
     }
 
@@ -226,6 +256,7 @@ class Advert
     public function setModel($model)
     {
         $this->model = (string) $model;
+        $this->updateHash();
         return $this;
     }
 
@@ -246,6 +277,7 @@ class Advert
     public function setBody($body = null)
     {
         $this->body = $body;
+        $this->updateHash();
         return $this;
     }
 
@@ -266,6 +298,7 @@ class Advert
     public function setColor($color = null)
     {
         $this->color = $color;
+        $this->updateHash();
         return $this;
     }
 
@@ -286,6 +319,7 @@ class Advert
     public function setHelm($helm = null)
     {
         $this->helm = $helm;
+        $this->updateHash();
         return $this;
     }
 
@@ -306,6 +340,7 @@ class Advert
     public function setCity($city)
     {
         $this->city = $city;
+        $this->updateHash();
         return $this;
     }
 
@@ -326,6 +361,7 @@ class Advert
     public function setEngine($engine = null)
     {
         $this->engine = $engine;
+        $this->updateHash();
         return $this;
     }
 
@@ -346,6 +382,7 @@ class Advert
     public function setPower($power = null)
     {
         $this->power = $power;
+        $this->updateHash();
         return $this;
     }
 
@@ -366,6 +403,7 @@ class Advert
     public function setTransmission($transmission = null)
     {
         $this->transmission = $transmission;
+        $this->updateHash();
         return $this;
     }
 
@@ -386,6 +424,7 @@ class Advert
     public function setGear($gear = null)
     {
         $this->gear = $gear;
+        $this->updateHash();
         return $this;
     }
 
@@ -406,6 +445,7 @@ class Advert
     public function setMileage($mileage = null)
     {
         $this->mileage = $mileage;
+        $this->updateHash();
         return $this;
     }
 
@@ -426,6 +466,7 @@ class Advert
     public function setAdditional($additional = null)
     {
         $this->additional = $additional;
+        $this->updateHash();
         return $this;
     }
 
@@ -446,6 +487,7 @@ class Advert
     public function setPrice($price)
     {
         $this->price = (int) $price;
+        $this->updateHash();
         return $this;
     }
 
@@ -466,6 +508,7 @@ class Advert
     public function setBulletinId($bulletinId = null)
     {
         $this->bulletinId = $bulletinId;
+        $this->updateHash();
         return $this;
     }
 
@@ -494,6 +537,7 @@ class Advert
     public function setBulletinDate(\DateTime $bulletinDate)
     {
         $this->bulletinDate = $bulletinDate;
+        $this->updateHash();
         return $this;
     }
 
@@ -542,6 +586,7 @@ class Advert
     public function setYear($year = null)
     {
         $this->year = $year;
+        $this->updateHash();
         return $this;
     }
 
@@ -562,6 +607,7 @@ class Advert
     public function setNew($new = null)
     {
         $this->new = $new;
+        $this->updateHash();
         return $this;
     }
 
@@ -582,6 +628,7 @@ class Advert
     public function setMaker($maker = null)
     {
         $this->maker = $maker;
+        $this->updateHash();
         return $this;
     }
 
@@ -589,10 +636,9 @@ class Advert
     /**
      * @return string
      */
-    public function updateHash()
+    protected function updateHash()
     {
-        return md5(
-            $this->url .
+        $stringToHash = $this->url .
             $this->model .
             $this->transmission .
             $this->price .
@@ -605,8 +651,12 @@ class Advert
             $this->maker .
             $this->power .
             $this->mileage .
-            $this->year .
-            $this->getSearch()->getId()
-        );
+            $this->year;
+
+        if ($this->getBulletinDate() instanceof \DateTime) {
+            $stringToHash .= $this->getBulletinDate()->getTimestamp();
+        }
+
+        $this->setHash(md5($stringToHash));
     }
 }

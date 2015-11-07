@@ -95,6 +95,13 @@ class AdvertService
             return false;
         }
         /** @var Search $search */
+        if (null === $search->generateUrl()) {
+            $this->logger->error('Url is null', [
+                'search_id' => $searchId,
+                'url' => $search->generateUrl()
+            ]);
+            return false;
+        }
         $crawler = $this->getCrawler($searchId, $search);
         if (null === $crawler) {
             return false;
@@ -114,11 +121,14 @@ class AdvertService
             $advert = $this->getAdvert($url, $crawler);
             if ($advert !== null) {
                 $advert->setSearch($search);
-                if () {
-
+                if (null === $this->advertRepository->findOneBy([
+                            'search' => $search->getId(),
+                            'hash' => $advert->getHash()
+                ])) {
+                    $this->advertRepository->persist($advert);
                 }
-                $this->advertRepository->persist($advert);
             }
+            usleep(100000);
         }
 
         $this->advertRepository->flush();

@@ -13,6 +13,8 @@ services:
         arguments:
             - @monitor.repository.search
             - @monitor.repository.user
+            - @logger
+            - %monitor.search.timeout_seconds%
 
     monitor.service.advert:
         class: MonitorBundle\Service\AdvertService

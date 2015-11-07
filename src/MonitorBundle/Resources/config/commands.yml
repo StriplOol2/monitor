@@ -5,5 +5,14 @@ services:
         class: MonitorBundle\Command\GetActualAdvertCommand
         arguments:
             - @monitor.service.advert
+            - @logger
+        tags:
+            - { name: console.command }
+
+    monitor.daemon.search:
+        class: MonitorBundle\Command\SearchDaemonCommand
+        arguments:
+            - @monitor.service.search
+            - @logger
         tags:
             - { name: console.command }

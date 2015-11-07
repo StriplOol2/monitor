@@ -10,6 +10,7 @@ use MonitorBundle\Exception\UserNotFoundException;
 use MonitorBundle\Factory\SearchFactory;
 use MonitorBundle\Repository\SearchRepository;
 use MonitorBundle\Repository\UserRepository;
+use Psr\Log\LoggerInterface;
 
 class SearchService
 {
@@ -29,17 +30,33 @@ class SearchService
     protected $searchFactory;
 
     /**
+     * @var int
+     */
+    protected $searchTimeoutSeconds;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * SearchService constructor.
      * @param SearchRepository $searchRepository
      * @param UserRepository $userRepository
+     * @param LoggerInterface $logger
+     * @param $searchTimeoutSeconds
      */
     public function __construct(
         SearchRepository $searchRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        LoggerInterface $logger,
+        $searchTimeoutSeconds
     ) {
         $this->searchRepository = $searchRepository;
         $this->userRepository = $userRepository;
         $this->searchFactory = new SearchFactory();
+        $this->searchTimeoutSeconds = $searchTimeoutSeconds;
+        $this->logger = $logger;
     }
 
     /**
@@ -135,5 +152,21 @@ class SearchService
             throw new SearchNotFoundException();
         }
         return $search;
+    }
+
+    public function runActualActiveSearches()
+    {
+        $dateTime = new \DateTime();
+        $timestamp = $dateTime->getTimestamp();
+        $timestamp -= $this->searchTimeoutSeconds;
+        $dateTime->setTimestamp($timestamp);
+        $searches = $this->searchRepository->findActualActivated($dateTime);
+        foreach ($searches as $search) {
+            $this->logger->info('start exec');
+            echo "php /var/www/monitor/app/console m:a:a --search_id {$search->getId()} > /dev/null 2>&1";
+            exec("php /var/www/monitor/app/console m:a:a --search_id {$search->getId()} > /dev/null 2>&1");
+            $this->logger->info('stop exec');
+        }
+
     }
 }

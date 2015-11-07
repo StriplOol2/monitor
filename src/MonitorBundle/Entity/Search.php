@@ -84,6 +84,8 @@ class Search
         $this->activated = (bool) $activated;
         if ($this->activated) {
             $this->activatedAt = new \DateTime();
+        } else {
+            $this->activatedAt = null;
         }
 
         return $this;
