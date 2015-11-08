@@ -113,11 +113,17 @@ class DromCrawlerAdapter extends AbstractCrawlerAdapter
      */
     protected function parseBulletinUrls($html)
     {
+        $currentDateTime = new \DateTime();
         $urls = [];
         $advertsHtmlList = $this->geListByRegexp(@"/<tr.+?data-bull-id.+?<\/span>.*?<\/td>.*?<\/tr>/ms", $html);
         foreach ($advertsHtmlList[0] as $advertHtml) {
-            $urlMatches = $this->getEntityByRegexp('/href.*?=.*?\"(.+?drom\.ru.+?\.html)/', $advertHtml);
-            $urls[] = $urlMatches;
+            $isUpped = !empty($this->getEntityByRegexp(@"/Поднято.+?(наверх)/i", $advertHtml));
+            $test= $this->getEntityByRegexp(@"/{$currentDateTime->format('(d-m)')}/i", $advertHtml);
+            $actualDate = !empty($test);
+
+            if ($isUpped || $actualDate) {
+                $urls[] =  $this->getEntityByRegexp('/href.*?=.*?\"(.+?drom\.ru.+?\.html)/', $advertHtml);
+            }
         }
         return $urls;
     }
