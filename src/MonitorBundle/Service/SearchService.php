@@ -116,11 +116,17 @@ class SearchService
     {
         $user = $this->getUser($authKey);
         $search = $this->getSearch($searchUpdated->getId(), $user->getId());
+        $searchIsActivated = $search->isActivated();
+
         $search
             ->setType($searchUpdated->getType())
             ->setUrl($searchUpdated->getUrl())
             ->setActivated($searchUpdated->isActivated())
             ->setMail($searchUpdated->getMail());
+
+        if (!$searchIsActivated && $searchUpdated->isActivated()) {
+            $this->runSearchCommand($search->getId());
+        }
 
         $this->searchRepository->merge($search);
         $this->searchRepository->flush($search);
@@ -136,9 +142,7 @@ class SearchService
         $dateTime->setTimestamp($timestamp);
         $searches = $this->searchRepository->findActualActivated($dateTime);
         foreach ($searches as $search) {
-            $this->logger->info('start exec ' . $search->getId());
-            exec("php /var/www/monitor/app/console m:a:a --search_id {$search->getId()} > /dev/null 2>&1");
-            $this->logger->info('stop exec ' . $search->getId());
+            $this->runSearchCommand($search->getId());
         }
     }
 
@@ -183,5 +187,15 @@ class SearchService
             throw new SearchNotFoundException();
         }
         return $search;
+    }
+
+    /**
+     * @param int $searchId
+     */
+    protected function runSearchCommand($searchId)
+    {
+        $this->logger->info('start exec m:a:a --search_id ' . $searchId);
+        exec("php /var/www/monitor/app/console m:a:a --search_id {$searchId} > /dev/null 2>&1");
+        $this->logger->info('stop exec m:a:a --search_id ' . $searchId);
     }
 }
