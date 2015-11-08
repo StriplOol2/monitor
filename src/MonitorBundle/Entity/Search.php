@@ -53,9 +53,53 @@ class Search
 
     /**
      * @var Advert[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="MonitorBundle\Entity\Advert", mappedBy="search")
+     * @ORM\OneToMany(targetEntity="MonitorBundle\Entity\Advert", mappedBy="search", fetch="EXTRA_LAZY")
      */
     protected $adverts;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=300, nullable=true)
+     */
+    protected $mail;
+
+    /**
+     * @return ArrayCollection|Advert[]
+     */
+    public function getAdverts()
+    {
+        return $this->adverts;
+    }
+
+    /**
+     * @param ArrayCollection|Advert[] $adverts
+     *
+     * @return $this
+     */
+    public function setAdverts($adverts)
+    {
+        $this->adverts = $adverts;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * @param null|string $mail
+     *
+     * @return $this
+     */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+        return $this;
+    }
 
     /**
      * Search constructor.

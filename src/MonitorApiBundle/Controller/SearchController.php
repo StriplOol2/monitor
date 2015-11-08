@@ -34,6 +34,27 @@ class SearchController extends BaseApiController
     }
 
     /**
+     * @Route("/users/{auth_key}/searches/{search_id}/update", name="monitor_api.search.update.activated")
+     * @Method({"PUT"})
+     * @Version(from="1.0")
+     *
+     * @Params\String("authKey", mapping={"auth_key"}, required=true)
+     * @Params\Integer("searchId", mapping={"search_id"}, required=true)
+     *
+     * @param string $authKey
+     * @param int $searchId
+     * @return \VLru\ApiBundle\Response\ApiJsonResponse
+     */
+    public function updateActivated($authKey, $searchId)
+    {
+        $result = $this->searchService->updateActivated($authKey, $searchId);
+        return $this->createSuccessApiJsonResponse(
+            $result,
+            ['default']
+        );
+    }
+
+    /**
      * @Route("/users/{auth_key}/searches/{search_id}", name="monitor_api.search.delete")
      * @Method({"DELETE"})
      * @Version(from="1.0")
@@ -47,7 +68,6 @@ class SearchController extends BaseApiController
      */
     public function deleteSearchAction($authKey, $searchId)
     {
-        /** @var Search $search */
         $result = $this->searchService->deleteSearch($authKey, $searchId);
         return $this->createSuccessApiJsonResponse(
             $result,

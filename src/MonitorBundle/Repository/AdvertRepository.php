@@ -17,7 +17,8 @@ class AdvertRepository extends BaseRepository
             ->andWhere('a.search = :searchId')
             ->andWhere('a.createAt >= :timestamp')
             ->setParameter('timestamp', $lastUpdateDateTime)
-            ->setParameter('searchId', $searchId);
+            ->setParameter('searchId', $searchId)
+            ->orderBy('a.id', 'DESC');
 
         return $qb->getQuery()
             ->getResult();

@@ -16,6 +16,7 @@ class SearchType extends AbstractType
             ->add('url', 'text')
             ->add('id', 'integer')
             ->add('activated', 'integer')
+            ->add('mail', 'text')
         ;
     }
 
