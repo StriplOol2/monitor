@@ -15,6 +15,11 @@ imports:
 
 monolog:
     handlers:
+        syslog:
+            type:                stream
+            path:                ~/logs/syslog
+            level:               ERROR
+            bubble:              false
         main:
             type:         fingers_crossed
             action_level: error

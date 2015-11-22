@@ -1,5 +1,3 @@
-order deny,allow
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} !-f

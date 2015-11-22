@@ -32,14 +32,6 @@ framework:
     http_method_override: true
     serializer:
             enabled: true
-# Monolog
-monolog:
-    handlers:
-        syslog:
-            type:                stream
-            path:                /var/log/syslog
-            level:               ERROR
-            bubble:              false
 
 # Twig Configuration
 twig:
