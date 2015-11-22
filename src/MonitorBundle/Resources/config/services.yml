@@ -29,3 +29,8 @@ services:
         class: MonitorBundle\Client\CurlClient
         arguments:
             - @logger
+
+    monitor.service.user:
+        class: MonitorBundle\Service\UserService
+        arguments:
+            - @monitor.repository.user

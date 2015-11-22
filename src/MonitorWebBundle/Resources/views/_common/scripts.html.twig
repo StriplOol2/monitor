@@ -1,0 +1,10 @@
+{% javascripts
+    '@MonitorWebBundle/Resources/public/js/underscore-1.6.0.min.js'
+    '@MonitorWebBundle/Resources/public/js/jquery-1.11.1.min.js'
+    '@MonitorWebBundle/Resources/public/js/backbone-1.1.2.min.js'
+    '@MonitorWebBundle/Resources/public/js/bootstrap.min.js'
+    '@MonitorWebBundle/Resources/public/js/MainPage/models/*'
+    '@MonitorWebBundle/Resources/public/js/MainPage/views/*'
+%}
+    <script src="{{ app.request.schemeAndHttpHost }}{{ asset(asset_url) }}"></script>
+{% endjavascripts %}

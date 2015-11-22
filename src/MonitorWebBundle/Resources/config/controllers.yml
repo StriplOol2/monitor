@@ -1,4 +1,7 @@
 parameters:
 
 services:
-
+  monitor_web.controller.application:
+        class: MonitorWebBundle\Controller\ApplicationController
+        calls:
+            - [ setContainer, [ @service_container ]]

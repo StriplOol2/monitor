@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Drom Monitor 3.0</title>
+    <link rel="shortcut icon" href="{{ absolute_url(asset('favicon.png')) }}">
+    <link rel="apple-touch-icon" href="{{ absolute_url(asset('favicon.png')) }}">
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+    {% block javascripts %}
+        {% include 'MonitorWebBundle:_common:scripts.html.twig' %}
+    {% endblock %}
+</body>
+</html>

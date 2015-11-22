@@ -34,7 +34,7 @@ class SearchController extends BaseApiController
     }
 
     /**
-     * @Route("/users/{auth_key}/searches/{search_id}/update", name="monitor_api.search.update.activated")
+     * @Route("/users/{auth_key}/searches/{search_id}/update_activated", name="monitor_api.search.update.activated")
      * @Method({"PUT"})
      * @Version(from="1.0")
      *

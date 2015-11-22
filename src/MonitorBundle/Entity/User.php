@@ -4,6 +4,7 @@ namespace MonitorBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use VLru\ApiBundle\Configuration\Serialization\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="MonitorBundle\Repository\UserRepository")
@@ -44,6 +45,7 @@ class User
     protected $searches;
 
     /**
+     * @Groups({"default"})
      * @var string
      * @ORM\Column(type="string", length=100)
      */

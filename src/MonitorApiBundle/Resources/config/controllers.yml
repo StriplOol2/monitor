@@ -16,3 +16,11 @@ services:
             calls:
                 - [ setContainer, [ @service_container ]]
                 - [ setNormalizer, [ @serializer ]]
+
+    monitor_api.controller.user:
+        class: MonitorApiBundle\Controller\UserController
+        arguments:
+            - @monitor.service.user
+        calls:
+            - [ setContainer, [ @service_container ]]
+            - [ setNormalizer, [ @serializer ]]

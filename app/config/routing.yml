@@ -1,3 +1,6 @@
 monitor.api:
     resource: @MonitorApiBundle/Resources/config/routing.yml
     prefix:   /api/
+
+monitor.web:
+    resource: @MonitorWebBundle/Resources/config/routing.yml
