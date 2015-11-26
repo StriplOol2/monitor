@@ -2,7 +2,7 @@
 
 namespace MonitorBundle\Factory;
 
-use Services\Analytics\Adapter\CrawlerAdapterInterface;
+use MonitorBundle\Adapter\CrawlerAdapterInterface;
 
 interface CrawlerFactoryInterface
 {
