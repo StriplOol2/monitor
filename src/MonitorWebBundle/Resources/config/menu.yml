@@ -1,0 +1,17 @@
+services:
+    monitor_web.menu_builder:
+        class: MonitorWebBundle\Menu\MenuBuilder
+        arguments:
+            - @knp_menu.factory
+
+    monitor_web.menu.main:
+        class: Knp\Menu\MenuItem
+        factory: [ @monitor_web.menu_builder, createMainMenu ]
+        tags:
+            - { name: knp_menu.menu, alias: main }
+
+    monitor_web.menu.left:
+        class: Knp\Menu\MenuItem
+        factory: [ @monitor_web.menu_builder, createLeftMenu ]
+        tags:
+            - { name: knp_menu.menu, alias: left }

@@ -1,7 +1,23 @@
 parameters:
 
 services:
-  monitor_web.controller.application:
-        class: MonitorWebBundle\Controller\ApplicationController
-        calls:
-            - [ setContainer, [ @service_container ]]
+  monitor_web.controller.dashboard:
+          class: MonitorWebBundle\Controller\DashboardController
+          calls:
+              - [ setContainer, [ @service_container ]]
+
+  monitor_web.controller.profile:
+          class: MonitorWebBundle\Controller\ProfileController
+          calls:
+              - [ setContainer, [ @service_container ]]
+
+  monitor_web.controller.settings:
+          class: MonitorWebBundle\Controller\SettingsController
+          calls:
+              - [ setContainer, [ @service_container ]]
+
+  monitor_web.controller.static_page:
+          class: MonitorWebBundle\Controller\StaticPageController
+          calls:
+              - [ setContainer, [ @service_container ]]
+

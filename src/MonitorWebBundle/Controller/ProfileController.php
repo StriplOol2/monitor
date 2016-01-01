@@ -7,12 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * @package MonitorWebBundle\Controller
- * @Route(service="monitor_web.controller.application")
+ * @Route(service="monitor_web.controller.profile")
  */
-class ApplicationController extends Controller
+class ProfileController extends Controller
 {
     /**
-     * @Route("/", name="monitor_web.application.show")
+     * @Route("/profile", name="monitor_web.profile.show")
      */
     public function showAction()
     {

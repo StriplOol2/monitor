@@ -21,7 +21,9 @@ class AppKernel extends Kernel
             new VLru\ApiBundle\ApiBundle(),
             new MonitorApiBundle\MonitorApiBundle(),
             new CommonBundle\CommonBundle(),
-            new MonitorWebBundle\MonitorWebBundle()
+            new MonitorWebBundle\MonitorWebBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

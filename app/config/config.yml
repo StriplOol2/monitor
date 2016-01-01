@@ -80,3 +80,14 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+fos_user:
+    service:
+        mailer: fos_user.mailer.twig_swift
+    db_driver: orm
+    firewall_name: main
+    user_class: MonitorBundle\Entity\User
+    from_email:
+        address: dromsoft@mail.ru
+        sender_name: Drom Monitor
+

@@ -5,12 +5,13 @@ namespace MonitorBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use VLru\ApiBundle\Configuration\Serialization\Groups;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity(repositoryClass="MonitorBundle\Repository\UserRepository")
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(columns={"auth_key"})})
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var int
@@ -19,24 +20,6 @@ class User
      * @ORM\GeneratedValue
      */
     protected $id;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $login;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $password;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=300)
-     */
-    protected $mail;
 
     /**
      * @var Search[]|ArrayCollection
@@ -56,7 +39,9 @@ class User
      */
     public function __construct()
     {
+        parent::__construct();
         $this->searches = new ArrayCollection();
+        $this->authKey = $this->getUsername();
     }
 
     /**
@@ -75,63 +60,6 @@ class User
     public function setId($id)
     {
         $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLogin()
-    {
-        return $this->login;
-    }
-
-    /**
-     * @param string $login
-     *
-     * @return $this
-     */
-    public function setLogin($login)
-    {
-        $this->login = $login;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     *
-     * @return $this
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMail()
-    {
-        return $this->mail;
-    }
-
-    /**
-     * @param string $mail
-     *
-     * @return $this
-     */
-    public function setMail($mail)
-    {
-        $this->mail = $mail;
         return $this;
     }
 
