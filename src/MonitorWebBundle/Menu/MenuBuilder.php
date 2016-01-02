@@ -53,6 +53,13 @@ class MenuBuilder
             'linkAttributes' => ['class' => 'nav_main__item-link'],
         ]);
 
+        $menu->addChild('Выход', [
+            'route' => 'fos_user_security_logout',
+            'routeParameters' => [],
+            'attributes' => ['class' => 'nav_main__item'],
+            'linkAttributes' => ['class' => 'nav_main__item-link'],
+        ]);
+
         return $menu;
     }
 
