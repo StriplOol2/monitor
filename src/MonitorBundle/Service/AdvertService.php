@@ -102,7 +102,7 @@ class AdvertService
             ]);
             return false;
         }
-        $crawler = $this->getCrawler($searchId, $search);
+        $crawler = $this->getCrawler($search);
         if (null === $crawler) {
             return false;
         }
@@ -156,17 +156,16 @@ class AdvertService
     }
 
     /**
-     * @param $searchId
      * @param Search $search
      * @return null|CrawlerAdapterInterface
      */
-    protected function getCrawler($searchId, Search $search)
+    protected function getCrawler(Search $search)
     {
         try {
             $crawlerFactory = $this->crawlerStrategy->getFactory($search->getType());
         } catch (InvalidTypeException $e) {
             $this->logger->error('Cannot get factory crawler', [
-                'search_id' => $searchId,
+                'search_id' => $search->getId(),
                 'exception' => $e
             ]);
             return null;

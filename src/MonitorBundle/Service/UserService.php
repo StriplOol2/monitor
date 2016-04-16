@@ -2,6 +2,7 @@
 
 namespace MonitorBundle\Service;
 
+use FOS\UserBundle\Model\UserInterface;
 use MonitorBundle\Entity\User;
 use MonitorBundle\Repository\UserRepository;
 
@@ -26,6 +27,9 @@ class UserService
      */
     public function auth($login, $password)
     {
-        return $this->userRepository->findOneBy(['username' => $login, 'password' => $password]);
+        /** @var UserInterface $user */
+        $user = $this->userRepository->findOneBy(['username' => $login]);
+        //@todo add password
+        return $user;
     }
 }

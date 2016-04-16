@@ -20,7 +20,7 @@ class DromCrawlerAdapter extends AbstractCrawlerAdapter
 
     protected function parsePower($html)
     {
-        return $this->getEntityByRegexp("/power=(\d+)/ms", $html);
+        return $this->getEntityByRegexp("/(\d+)\s+л\.с\./ms", $html);
     }
 
     protected function parseTransmission($html)

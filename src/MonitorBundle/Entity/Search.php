@@ -91,6 +91,7 @@ class Search
     }
 
     /**
+     *  @Groups({"default"})
      * @param null|string $mail
      *
      * @return $this
