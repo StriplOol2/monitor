@@ -1,0 +1,7 @@
+services:
+  queue.rabbitmq.command.consumer.wrapper:
+    class: VLru\QueueBundle\Wrapper\RabbitMqConsumerCommandWrapper
+    arguments:
+      - @logger
+    tags:
+      - { name: console.command }

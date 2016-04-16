@@ -1,0 +1,6 @@
+imports:
+    - { resource: commands.yml }
+
+services:
+  queue.strategy.element_serializer:
+    class: VLru\QueueBundle\Strategy\ElementSerializeStrategy

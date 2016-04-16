@@ -41,7 +41,7 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->searches = new ArrayCollection();
-        $this->authKey = $this->getUsername();
+        $this->authKey = $this->getUsername(); //@todo wtf?
     }
 
     /**

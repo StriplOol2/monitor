@@ -26,6 +26,6 @@ class UserService
      */
     public function auth($login, $password)
     {
-        return $this->userRepository->findOneBy(['login' => $login, 'password' => $password]);
+        return $this->userRepository->findOneBy(['username' => $login, 'password' => $password]);
     }
 }
