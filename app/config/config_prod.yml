@@ -17,16 +17,12 @@ monolog:
     handlers:
         syslog:
             type:                stream
-            path:                ~/logs/syslog
-            level:               ERROR
+            path:                /var/log/syslog
+            level:               debug
             bubble:              false
         main:
-            type:         fingers_crossed
-            action_level: error
-            handler:      nested
-        nested:
-            type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            level:  debug
         console:
             type:  console
