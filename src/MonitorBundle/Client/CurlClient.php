@@ -27,7 +27,9 @@ class CurlClient implements ClientInterface
      */
     public function getContent($url)
     {
-        $init = curl_init($url);
+        $proxyUrl = 'http://dromsoft.ru/proxy.php?url=' . $url;
+        $this->logger->info('Generated proxy url', ['proxy_url' => $proxyUrl]);
+        $init = curl_init($proxyUrl);
         curl_setopt($init, CURLOPT_RETURNTRANSFER, true);
         curl_setopt(
             $init,
@@ -40,7 +42,7 @@ class CurlClient implements ClientInterface
         $html = curl_exec($init);
 
         if (curl_error($init)) {
-            $this->logger->error('Error on curl', ['url' => $url]);
+            $this->logger->error('Error on curl', ['url' => $url, 'proxy_url' => $proxyUrl]);
             curl_close($init);
             throw new CurlErrorException();
         }
