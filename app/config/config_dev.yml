@@ -16,7 +16,7 @@ monolog:
         syslog:
             type:                stream
             path:                /var/log/syslog
-            level:               ERROR
+            level:               debug
             bubble:              false
         main:
             type:   stream
