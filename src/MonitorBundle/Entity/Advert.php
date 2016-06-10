@@ -10,6 +10,7 @@ use VLru\ApiBundle\Configuration\Serialization\Groups;
  * @ORM\Table(name="advert", indexes={
  *     @ORM\Index(columns={"search_id"}),
  *     @ORM\Index(columns={"hash"}),
+ *     @ORM\Index(columns={"search_id", "create_at"}),
  *     @ORM\Index(name="IDX_SEARCH_HASH", columns={"search_id", "hash"})
  * }))
  */
